@@ -23,7 +23,6 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='категория')
     price = models.FloatField(verbose_name='цена')
     created_at = models.DateTimeField(null=True, blank=True, verbose_name='произведено')
-    manufactured_at = models.DateTimeField(null=True, blank=True, verbose_name='выпущено')
     updated_at = models.DateTimeField(null=True, blank=True, verbose_name='изменено')
 
     def  __str__(self):
