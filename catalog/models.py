@@ -4,16 +4,33 @@ from django.db import models
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=30)
-    desc = models.TextField()
+    name = models.CharField(max_length=30, verbose_name='название')
+    desc = models.TextField(verbose_name='описание')
+
+    def __str__(self):
+        return (f"{self.name}\n"
+                f"{self.desc}")
+
+    class Meta:
+        verbose_name = 'категория'
+        verbose_name_plural = 'категории'
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=30)
-    desc = models.TextField()
-    image = models.ImageField(upload_to='media/')
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    price = models.FloatField()
-    created_at = models.DateTimeField(null=True, blank=True)
-    manufactured_at = models.DateTimeField(null=True, blank=True)
-    updated_at = models.DateTimeField(null=True, blank=True)
+    name = models.CharField(max_length=30, verbose_name='название')
+    desc = models.TextField(verbose_name='описание')
+    image = models.ImageField(upload_to='media/', verbose_name='фото')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='категория')
+    price = models.FloatField(verbose_name='цена')
+    created_at = models.DateTimeField(null=True, blank=True, verbose_name='произведено')
+    manufactured_at = models.DateTimeField(null=True, blank=True, verbose_name='выпущено')
+    updated_at = models.DateTimeField(null=True, blank=True, verbose_name='изменено')
+
+    def  __str__(self):
+        return (f"{self.name}, {self.price}.\n"
+                f"Относится к категории {self.category}\n"
+                f"{self.desc}")
+
+    class Meta:
+        verbose_name = 'продукт'
+        verbose_name_plural = 'продукты'
