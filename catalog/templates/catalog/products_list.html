@@ -1,24 +1,23 @@
-    {% extends 'catalog/base.html' %}
+{% extends 'catalog/base.html' %}
 
-    {% block content %}
+{% block content %}
     <div class="row text-center">
         {% for product in product_list %}
-        <div class="col-3">
-            <div class="card mb-4 box-shadow">
-                <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">{{ product.name }}</h4>
-                </div>
-                <div class="card-body">
-                    <h2 class="card-title pricing-card-title">{{ product.price }} руб.</h2>
-                    <ul class="list-unstyled mt-3 mb-4 text-start m-3">
-                        {{ product.desc }}
-                    </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-outline-primary">Посмотреть информацию</button>
+            <div class="col-3">
+                <div class="card mb-4 box-shadow">
+                    <div class="card-header">
+                        <h4 class="my-0 font-weight-normal">{{ product.name }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <h2 class="card-title pricing-card-title">{{ product.price }} руб.</h2>
+                        <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                            {{ product.desc }}
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
         {% endfor %}
     </div>
-    {% endblock %}
+{% endblock %}
 
 
