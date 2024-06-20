@@ -1,0 +1,23 @@
+{% extends 'catalog/base.html' %}
+{% load my_tags %}
+
+{% block content %}
+    <div class="row text-center">
+        <div class="col-3">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{ product.name }}</h4>
+                </div>
+                <div class="card-body">
+                    <img src="{{ product.image | media_filter }}" alt="{{ product.name }}" width="200" height="100">
+                    <h2 class="card-title pricing-card-title">{{ product.price }} руб.</h2>
+                    <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                        {{ product.desc }}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+

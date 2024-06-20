@@ -25,7 +25,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(null=True, blank=True, verbose_name='произведено')
     updated_at = models.DateTimeField(null=True, blank=True, verbose_name='изменено')
 
-    def  __str__(self):
+    def __str__(self):
         return (f"{self.name}, {self.price}.\n"
                 f"Относится к категории {self.category}\n"
                 f"{self.desc}")
