@@ -1,0 +1,27 @@
+{% extends 'blogs/blog_base.html'%}
+{% load my_tags %}
+
+{% block content %}
+<div class="row text-center">
+    {% for object in object_list %}
+    <div class="card text-center mb-" style="width: 25rem;">
+        <div class="card-header">
+            <h4 class="card-title">{{ object.title }}</h4>
+        </div>
+        <div class="card-body">
+            <img class="img-fluid" src="{{ object.preview|media_filter }}" alt="{{ object.title }}">
+        </div>
+        <div class="card-body">
+            <div class="btn-group">
+                <a href="{% url 'blogs:update' object.pk %}" class="btn btn-primary">Изменить</a>
+                <a href="{% url 'blogs:detail' object.pk %}" class="btn btn-primary">Посмотреть</a>
+                <a href="{% url 'blogs:delete' object.pk %}" class="btn btn-primary">Удалить</a>
+            </div>
+        </div>
+        <div class="card-body">
+            просмотрено {{ object.view_counter }} раз(-а)
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
