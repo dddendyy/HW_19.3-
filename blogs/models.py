@@ -7,10 +7,10 @@ class Blog(models.Model):
     title = models.CharField(max_length=100, verbose_name='заголовок')
     slug = models.CharField(max_length=30, verbose_name='slug')
     content = models.TextField(verbose_name='содержимое')
-    preview = models.ImageField(upload_to='media/blog_preview/', verbose_name='превью', null=True, blank=True)
+    preview = models.ImageField(upload_to='media/', verbose_name='превью', null=True, blank=True)
     date = models.DateField(verbose_name='дата создания')
     is_published = models.BooleanField(verbose_name='опубликовано')
-    view_counter = models.IntegerField(verbose_name='кол-во просмотров')
+    view_counter = models.IntegerField(verbose_name='кол-во просмотров', null=True, blank=True)
 
     def __str__(self):
         return (f'{self.title}\n'

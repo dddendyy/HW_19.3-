@@ -1,0 +1,12 @@
+{% extends 'blogs/blog_base.html'%}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <p>Вы уверены, что хотите удалить запись?</p>
+    <button type="submit" class="btn btn-danger">
+        Подтвердить
+    </button>
+    <a href="{% url 'blogs:list' %}" class="btn btn-secondary">Отмена</a>
+</form>
+{% endblock %}
