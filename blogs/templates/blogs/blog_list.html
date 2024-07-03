@@ -18,6 +18,9 @@
                 <a href="{% url 'blogs:delete' object.pk %}" class="btn btn-primary">Удалить</a>
             </div>
         </div>
+        <div class="card-body">
+            просмотрено {{ object.view_counter }} раз(-а)
+        </div>
     </div>
     {% endfor %}
 </div>
