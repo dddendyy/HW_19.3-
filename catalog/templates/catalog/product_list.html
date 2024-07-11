@@ -1,8 +1,9 @@
 {% extends 'catalog/base.html' %}
 
 {% block content %}
+    <a class="p-2 mb-3 btn btn-outline-primary" href="{% url 'catalog:create' %}">Добавить запись</a>
     <div class="row text-center">
-        {% for product in product_list %}
+        {% for product in object_list %}
             <div class="col-3">
                 <div class="card mb-4 box-shadow">
                     <div class="card-header">
@@ -13,11 +14,10 @@
                         <ul class="list-unstyled mt-3 mb-4 text-start m-3">
                             {{ product.desc }}
                         </ul>
+                        <a href="{% url 'catalog:update' product.pk %}" class="btn btn-primary">Изменить</a>
                     </div>
                 </div>
             </div>
         {% endfor %}
     </div>
 {% endblock %}
-
-
