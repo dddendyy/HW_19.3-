@@ -1,23 +1,32 @@
 {% extends 'catalog/base.html' %}
+{% load my_tags %}
 
 {% block content %}
-    <a class="p-2 mb-3 btn btn-outline-primary" href="{% url 'catalog:create' %}">Добавить запись</a>
-    <div class="row text-center">
-        {% for product in object_list %}
-            <div class="col-3">
-                <div class="card mb-4 box-shadow">
-                    <div class="card-header">
-                        <h4 class="my-0 font-weight-normal">{{ product.name }}</h4>
-                    </div>
-                    <div class="card-body">
-                        <h2 class="card-title pricing-card-title">{{ product.price }} руб.</h2>
-                        <ul class="list-unstyled mt-3 mb-4 text-start m-3">
-                            {{ product.desc }}
-                        </ul>
-                        <a href="{% url 'catalog:update' product.pk %}" class="btn btn-primary">Изменить</a>
-                    </div>
-                </div>
+<a class="p-2 mb-3 btn btn-outline-primary" href="{% url 'catalog:create' %}">Добавить запись</a>
+
+<div class="row text-center">
+    {% for product in object_list %}
+    <div class="col-3">
+        <div class="card mb-4 box-shadow">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal">{{ product.name }}</h4>
             </div>
-        {% endfor %}
+            <div class="card-body">
+                <h2 class="card-title pricing-card-title">{{ product.price }} руб.</h2>
+                <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                    {{ product.desc }}
+                </ul>
+                {% with current_version=current_version|get_item:product.id %}
+                    {% if current_version %}
+                        Актуальная версия: {{ current_version|cut_string:10 }}
+                    {% else %}
+                        Версия не указана
+                    {% endif %}
+                {% endwith %}
+                <a href="{% url 'catalog:update' product.pk %}" class="btn btn-primary">Изменить</a>
+            </div>
+        </div>
     </div>
+    {% endfor %}
+</div>
 {% endblock %}

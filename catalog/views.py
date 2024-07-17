@@ -1,5 +1,4 @@
 from django.forms import inlineformset_factory
-from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView
 
@@ -20,6 +19,16 @@ class HomeTemplateView(TemplateView):
 
 class ProductsListView(ListView):
     model = Product
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        products = self.get_queryset()
+        versions = {}
+        for product in products:
+            current_version = Version.objects.filter(product_id=product.pk, is_current=True).first()
+            versions[product.pk] = current_version
+        context_data['current_version'] = versions
+        return context_data
 
 
 class ProductCardDetailView(DetailView):
