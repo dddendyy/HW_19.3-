@@ -14,7 +14,3 @@ def media_filter(path):
         return f'/{path}'
     return f'#'
 
-
-@register.filter()
-def cut_string(string, number):
-    return str(string)[8:number+2]

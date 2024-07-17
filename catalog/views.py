@@ -25,8 +25,10 @@ class ProductsListView(ListView):
         products = self.get_queryset()
         versions = {}
         for product in products:
-            current_version = Version.objects.filter(product_id=product.pk, is_current=True).first()
-            versions[product.pk] = current_version
+            current_version = Version.objects.filter(product_id=product.pk, is_current=True)
+            if current_version:
+                current_version = Version.objects.get(product_id=product.pk, is_current=True)
+                versions[product.pk] = current_version
         context_data['current_version'] = versions
         return context_data
 
