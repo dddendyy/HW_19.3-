@@ -6,9 +6,6 @@ from catalog.forms import ProductForm, VersionForm
 from catalog.models import Product, Version
 
 
-# Create your views here.
-
-
 class ContactTemplateView(TemplateView):
     template_name = 'catalog/contacts.html'
 
