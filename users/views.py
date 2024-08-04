@@ -2,7 +2,6 @@ import random
 import string
 
 
-from django.contrib.auth.views import PasswordResetConfirmView
 from django.core.mail import send_mail
 from django.shortcuts import render
 from django.urls import reverse_lazy
