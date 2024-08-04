@@ -25,6 +25,7 @@
                 {% endwith %}
                 <a href="{% url 'catalog:update' product.pk %}" class="btn btn-primary">Изменить</a>
             </div>
+            <p>Произведено {{ product.created_by }}</p>
         </div>
     </div>
     {% endfor %}

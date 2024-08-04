@@ -6,9 +6,6 @@ from catalog.forms import ProductForm, VersionForm
 from catalog.models import Product, Version
 
 
-# Create your views here.
-
-
 class ContactTemplateView(TemplateView):
     template_name = 'catalog/contacts.html'
 
@@ -42,6 +39,14 @@ class ProductCreateView(CreateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:products')
+
+    def form_valid(self, form):
+        if form.is_valid():
+            new_product = form.save()
+            new_product.created_by = self.request.user
+            new_product.save()
+
+        return super().form_valid(form)
 
 
 class ProductUpdateView(UpdateView):
