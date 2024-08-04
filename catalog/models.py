@@ -1,5 +1,7 @@
 from django.db import models
 
+from users.models import User
+
 
 class Category(models.Model):
     name = models.CharField(max_length=30, verbose_name='название')
@@ -20,6 +22,7 @@ class Product(models.Model):
     image = models.ImageField(upload_to='media/', verbose_name='фото', null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='категория')
     price = models.FloatField(verbose_name='цена')
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, verbose_name='пользователь', null=True, blank=True)
     created_at = models.DateTimeField(null=True, blank=True, verbose_name='произведено')
     updated_at = models.DateTimeField(null=True, blank=True, verbose_name='изменено')
 
