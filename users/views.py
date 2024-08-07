@@ -1,10 +1,11 @@
 import random
+import secrets
 import string
 
-
+from django.contrib import messages
 from django.core.mail import send_mail
-from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView
 
 from config.settings import EMAIL_HOST_USER
@@ -29,11 +30,37 @@ class RegisterView(CreateView):
 
     def form_valid(self, form):
         if form.is_valid():
-            new_form = form.save()
-            sended_message = f'Аккаунт с почтой {new_form.email} успешно зарегистрирован'
-            send_mail('Оповещение о регистрации', sended_message, EMAIL_HOST_USER, [str(new_form.email)])
+            user = form.save()
+            user.is_active = False
+            token = secrets.token_hex(16)
+            user.token = token
+            user.save()
+            host = self.request.get_host()
+            url = f'http://{host}/users/email-confirmation/{user.token}/'
+            try:
+                send_mail(
+                    subject='Подтверждение почты',
+                    message=f'Для подтверждения регистрации, пройдите по ссылке {url}',
+                    from_email=EMAIL_HOST_USER,
+                    recipient_list=[user.email]
+                )
+            except:
+                user.delete()
+                messages.error(self.request, 'Ошибка при отправке письма. Попробуйте еще раз.')
+                return redirect('users:register')
+
+            # sended_message = f'Аккаунт с почтой {user.email} успешно зарегистрирован'
+            # send_mail('Оповещение о регистрации', sended_message, EMAIL_HOST_USER, [str(user.email)])
 
         return super().form_valid(form)
+
+
+def email_verification(request, token):
+    user = get_object_or_404(User, token=token)
+    user.is_active = True
+    user.token = None
+    user.save()
+    return redirect(reverse('users:login'))
 
 
 class ProfileView(UpdateView):
