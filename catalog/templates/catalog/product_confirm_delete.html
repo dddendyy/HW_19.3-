@@ -1,0 +1,12 @@
+{% extends 'catalog/base.html' %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <p>Вы уверены, что хотите удалить продукт?</p>
+    <button type="submit" class="btn btn-danger">
+        Подтвердить
+    </button>
+    <a href="{% url 'catalog:products' %}" class="btn btn-secondary">Отмена</a>
+</form>
+{% endblock %}

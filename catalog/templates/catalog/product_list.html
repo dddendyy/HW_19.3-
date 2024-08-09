@@ -17,13 +17,14 @@
                     {{ product.desc }}
                 </ul>
                 {% with current_version=current_version|get_item:product.id %}
-                    {% if current_version %}
-                        Актуальная версия: {{ current_version.name }} №{{ current_version.number }}
-                    {% else %}
-                        Версия не указана
-                    {% endif %}
+                {% if current_version %}
+                Актуальная версия: {{ current_version.name }} №{{ current_version.number }}
+                {% else %}
+                Версия не указана
+                {% endif %}
                 {% endwith %}
                 <a href="{% url 'catalog:update' product.pk %}" class="btn btn-primary">Изменить</a>
+                <a href="{% url 'catalog:delete' product.pk %}" class="btn btn-outline-danger">Удалить</a>
             </div>
             <p>Произведено {{ product.created_by }}</p>
         </div>

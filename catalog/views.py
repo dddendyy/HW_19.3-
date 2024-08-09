@@ -1,14 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from catalog.forms import ProductForm, VersionForm
 from catalog.models import Product, Version
-
-
-# class UserLoginRequiredMixin(LoginRequiredMixin):
-#     login_url = 'user/login/'
 
 
 class ContactTemplateView(TemplateView):
@@ -76,3 +72,9 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
             formset.save()
 
         return super().form_valid(form)
+
+
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
+    model = Product
+    success_url = reverse_lazy('catalog:products')
+
