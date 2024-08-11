@@ -1,14 +1,11 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.forms import inlineformset_factory
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from catalog.forms import ProductForm, VersionForm
+from catalog.forms import ProductForm, VersionForm, ProductModeratorForm
 from catalog.models import Product, Version
-
-
-# class UserLoginRequiredMixin(LoginRequiredMixin):
-#     login_url = 'user/login/'
 
 
 class ContactTemplateView(TemplateView):
@@ -40,9 +37,10 @@ class ProductCardDetailView(LoginRequiredMixin, DetailView):
     template_name = 'catalog/product_card.html'
 
 
-class ProductCreateView(LoginRequiredMixin, CreateView):
+class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
+    permission_required = 'catalog.add_продукт'
     success_url = reverse_lazy('catalog:products')
 
     def form_valid(self, form):
@@ -76,3 +74,19 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
             formset.save()
 
         return super().form_valid(form)
+
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.created_by:
+            return ProductForm
+        if user.has_perms(["catalog.can_cancel_publication",
+                           "catalog.can_edit_description",
+                           "catalog.can_edit_category"]):
+            return ProductModeratorForm
+        raise PermissionDenied
+
+
+class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    model = Product
+    permission_required = 'catalog.delete_product'
+    success_url = reverse_lazy('catalog:products')
