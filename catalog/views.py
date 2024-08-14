@@ -34,7 +34,7 @@ class ProductsListView(LoginRequiredMixin, ListView):
 
 class ProductCardDetailView(LoginRequiredMixin, DetailView):
     model = Product
-    template_name = 'catalog/product_card.html'
+    # template_name = 'catalog/product_card.html'
 
 
 class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
