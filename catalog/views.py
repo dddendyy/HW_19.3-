@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from catalog.forms import ProductForm, VersionForm, ProductModeratorForm
-from catalog.models import Product, Version
+from catalog.models import Product, Version, Category
 
 
 class ContactTemplateView(TemplateView):
@@ -14,6 +14,10 @@ class ContactTemplateView(TemplateView):
 
 class HomeTemplateView(TemplateView):
     template_name = 'catalog/home.html'
+
+
+class CategoryListView(LoginRequiredMixin, ListView):
+    model = Category
 
 
 class ProductsListView(LoginRequiredMixin, ListView):
