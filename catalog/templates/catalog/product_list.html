@@ -18,14 +18,17 @@
                 </ul>
                 {% with current_version=current_version|get_item:product.id %}
                 {% if current_version %}
-                    Актуальная версия: {{ current_version.name }} №{{ current_version.number }}
+                Актуальная версия: {{ current_version.name }} №{{ current_version.number }}
                 {% else %}
-                    Версия не указана
+                Версия не указана
                 {% endif %}
                 {% endwith %}
                 {% if perms.catalog.can_cancel_publication and perms.catalog.can_edit_description and perms.catalog.can_edit_description or user == product.created_by %}
+                <div class="btn-group" role="group" aria-label="Простой пример">
+                    <a href="{% url 'catalog:product' product.pk %}" class="btn btn-primary">Подробнее</a>
                     <a href="{% url 'catalog:update' product.pk %}" class="btn btn-primary">Изменить</a>
                     <a href="{% url 'catalog:delete' product.pk %}" class="btn btn-outline-danger">Удалить</a>
+                </div>
                 {% endif %}
             </div>
             <p>Произведено {{ product.created_by }}</p>

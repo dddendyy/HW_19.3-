@@ -1,11 +1,14 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.core.cache import cache
 from django.core.exceptions import PermissionDenied
 from django.forms import inlineformset_factory
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from catalog.forms import ProductForm, VersionForm, ProductModeratorForm
-from catalog.models import Product, Version
+from catalog.models import Product, Version, Category
+from catalog.service import get_categories_from_cache
+from config import settings
 
 
 class ContactTemplateView(TemplateView):
@@ -16,25 +19,20 @@ class HomeTemplateView(TemplateView):
     template_name = 'catalog/home.html'
 
 
+class CategoryListView(LoginRequiredMixin, ListView):
+    model = Category
+
+
 class ProductsListView(LoginRequiredMixin, ListView):
     model = Product
 
-    def get_context_data(self, **kwargs):
-        context_data = super().get_context_data(**kwargs)
-        products = self.get_queryset()
-        versions = {}
-        for product in products:
-            current_version = Version.objects.filter(product_id=product.pk, is_current=True)
-            if current_version:
-                current_version = Version.objects.get(product_id=product.pk, is_current=True)
-                versions[product.pk] = current_version
-        context_data['current_version'] = versions
-        return context_data
+    def get_queryset(self):
+        return get_categories_from_cache()
 
 
 class ProductCardDetailView(LoginRequiredMixin, DetailView):
     model = Product
-    template_name = 'catalog/product_card.html'
+    # template_name = 'catalog/product_card.html'
 
 
 class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
